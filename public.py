@@ -1,0 +1,1 @@
+mainDialog = None
