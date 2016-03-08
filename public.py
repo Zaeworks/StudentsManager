@@ -1,1 +1,2 @@
 mainDialog = None
+studentManager = None
