@@ -21,6 +21,21 @@ class MainWindow(object):
 
         self.statusBar = window.statusbar
 
+    def onSearch(self):
+        pass
+
+    def onQuickSearch(self):
+        pass
+
+    def onAddStudent(self):
+        pass
+
+    def onEdit(self):
+        pass
+
+    def onDelete(self):
+        pass
+
     def setStudentInfo(self, student):
         self.indexLabel.setText(student.index)
         self.nameLabel.setText(student.name)
