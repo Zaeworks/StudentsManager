@@ -6,10 +6,10 @@ class MainWindow(object):
     """主窗口封装类"""
 
     def __init__(self):
-        self.dialog = QtWidgets.QDialog()
+
+        self.dialog = QtWidgets.QMainWindow()
         window = Ui_MainWindow()
         window.setupUi(self.dialog)
-
         self.dialog.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
 
         self.indexLabel = window.indexLabel
@@ -19,6 +19,8 @@ class MainWindow(object):
         self.gradeLabel = window.gradeLabel
         self.classLabel = window.classLabel
 
+        self.statusBar = window.statusbar
+
     def setStudentInfo(self, student):
         self.indexLabel.setText(student.index)
         self.nameLabel.setText(student.name)
@@ -26,3 +28,9 @@ class MainWindow(object):
         self.majorLabel.setText(student.major)
         self.gradeLabel.setText(student.grade)
         self.classLabel.setText(student.classname)
+
+    def setStatus(self, text):
+        self.statusBar.setText(text)
+
+    def show(self):
+        self.dialog.show()
