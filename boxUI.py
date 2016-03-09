@@ -41,12 +41,12 @@ class StudentBox(object):
         self.cancelButton.setText(cancel) if cancel is not None else None
 
     def applyToStudent(self, student):
-        student.index = self.indexEdit.getText()
-        student.name = self.nameEdit.getText()
-        student.birth = self.birthEdit.getText()
-        student.major = self.majorEdit.getText()
-        student.grade = self.gradeEdit.getText()
-        student.classname = self.classEdit.getText()
+        student.index = self.indexEdit.text()
+        student.name = self.nameEdit.text()
+        student.birth = self.birthEdit.text()
+        student.major = self.majorEdit.text()
+        student.grade = self.gradeEdit.text()
+        student.classname = self.classEdit.text()
 
     def onFinished(self):
         pass
@@ -109,11 +109,11 @@ class SearchBox(StudentBox):
 
     def onFinished(self):
         keyList = [
-            ("index", ' '.join(self.indexEdit.getText().split())),
-            ("name", ' '.join(self.nameEdit.getText().split())),
-            ("birth", ' '.join(self.birthEdit.getText().split())),
-            ("major", ' '.join(self.majorEdit.getText().split())),
-            ("grade", ' '.join(self.gradeEdit.getText().split())),
-            ("classname", ' '.join(self.classEdit.getText().split()))
+            ("index", ' '.join(self.indexEdit.text().split())),
+            ("name", ' '.join(self.nameEdit.text().split())),
+            ("birth", ' '.join(self.birthEdit.text().split())),
+            ("major", ' '.join(self.majorEdit.text().split())),
+            ("grade", ' '.join(self.gradeEdit.text().split())),
+            ("classname", ' '.join(self.classEdit.text().split()))
         ]
         self.callback(keyList)
