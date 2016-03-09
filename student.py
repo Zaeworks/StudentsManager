@@ -1,5 +1,6 @@
 import os
 import public
+import pickle
 
 attributeList = [
     ("index", "学号"),
@@ -20,7 +21,7 @@ class StudentManager(object):
         # 学号 -> 学生对象
         self.studentIndex = {}
 
-        self.load(path) if path else None
+        self.load(path)
 
         self.emptyStudent = Student()
 
@@ -75,15 +76,36 @@ class StudentManager(object):
 
     def save(self, path=None):
         path = path or self.path
-        if not path:
-            return False
+        try:
+            f = open(path, 'wb')
+            pickle.dump(self.studentList, f)
+            pickle.dump(self.studentIndex, f)
+            result = True
+        except:
+            result = False
+        finally:
+            if f:
+                f.close()
+            return result
 
-    def load(self, path):
+    def load(self, path=None):
+        path = path or public.defaultDataPath
         self.path = path
-        if os.path.exists(path):
-            pass  # TODO
-        else:
-            return True
+        try:
+            f = open(path, 'rb')
+            studentList = pickle.load(f)
+            studentIndex = pickle.load(f)
+            result = True
+        except:
+            result = False
+            studentList = []
+            studentIndex = {}
+        finally:
+            if f:
+                f.close()
+            self.studentList = studentList
+            self.studentIndex = studentIndex
+        return result
 
 
 class Student(object):
