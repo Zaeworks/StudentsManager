@@ -11,7 +11,7 @@ class StudentBox(object):
 
         self.dialog = QtWidgets.QDialog()
         window = Ui_StudentBox()
-        window.setupUi()
+        window.setupUi(self.dialog)
 
         self.indexEdit = window.indexEdit
         self.nameEdit = window.nameEdit
@@ -25,7 +25,7 @@ class StudentBox(object):
 
         self.msgLabel = window.msg
 
-        self.searchButton.clicked.connect(self.onFinished)
+        self.okButton.clicked.connect(self.onFinished)
 
     def show(self):
         self.dialog.show()
