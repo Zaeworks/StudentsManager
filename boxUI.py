@@ -13,6 +13,8 @@ class StudentBox(object):
         window = Ui_StudentBox()
         window.setupUi(self.dialog)
 
+        self.dialog.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
+
         self.indexEdit = window.indexEdit
         self.nameEdit = window.nameEdit
         self.birthEdit = window.birthEdit
@@ -20,12 +22,16 @@ class StudentBox(object):
         self.gradeEdit = window.gradeEdit
         self.classEdit = window.classEdit
 
-        self.okButton = window.okButton
-        self.cancelButton = window.cancelButton
-
         self.msgLabel = window.msg
 
-        self.okButton.clicked.connect(self.onFinished)
+        self.okButton = window.okButton
+        self.cancelButton = window.cancelButton
+        self.okButton.clicked.connect(self.onOkButtonClicked)
+        self.cancelButton.clicked.connect(self.dialog.close)
+
+    def onOkButtonClicked(self):
+        if self.onFinished():
+            self.dialog.close()
 
     def show(self):
         self.dialog.show()
@@ -49,7 +55,7 @@ class StudentBox(object):
         student.classname = self.classEdit.text()
 
     def onFinished(self):
-        pass
+        return False
 
 
 class EditBox(StudentBox):
@@ -71,10 +77,18 @@ class EditBox(StudentBox):
         self.gradeEdit.setText(student.grade)
         self.classEdit.setText(student.classname)
 
+        self._student = Student()
+
     def onFinished(self):
         student = self.student
-        self.applyToStudent(student)
-        self.callback(student)
+        self.applyToStudent(self._student)
+        check, info = self._student.checkInfo()
+        if check:
+            self.applyToStudent(student)
+            self.callback(student)
+        else:
+            self.setMsg(info)
+        return check
 
 
 class NewBox(StudentBox):
@@ -93,7 +107,9 @@ class NewBox(StudentBox):
     def onFinished(self):
         student = self.student
         self.applyToStudent(student)
-        self.callback(self.student)
+        check, info = student.checkInfo(True)
+        self.callback(self.student) if check else self.setMsg(info)
+        return check
 
 
 class SearchBox(StudentBox):
@@ -117,3 +133,4 @@ class SearchBox(StudentBox):
             ("classname", ' '.join(self.classEdit.text().split()))
         ]
         self.callback(keyList)
+        return True
