@@ -35,7 +35,7 @@ class StudentManager(object):
 
     def add(self, student):
         self.studentList.append(student)
-        self.studenIndex[student.index] = student
+        self.studentIndex[student.index] = student
 
     def delete(self, student):
         if isinstance(student, Student):
@@ -46,7 +46,7 @@ class StudentManager(object):
             return False
 
         self.studentIndex.pop(student.index)
-        self.studentList.pop(student)
+        self.studentList.remove(student)
         return True
 
     def multiSearch(self, keyList):
@@ -76,6 +76,7 @@ class StudentManager(object):
 
     def save(self, path=None):
         path = path or self.path
+        f = None
         try:
             f = open(path, 'wb')
             pickle.dump(self.studentList, f)
@@ -91,6 +92,7 @@ class StudentManager(object):
     def load(self, path=None):
         path = path or public.defaultDataPath
         self.path = path
+        f = None
         try:
             f = open(path, 'rb')
             studentList = pickle.load(f)
