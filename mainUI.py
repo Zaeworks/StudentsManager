@@ -1,5 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtWidgets import QMessageBox
 from _mainUI import Ui_MainWindow
+import boxUI
 import public
 
 
@@ -48,24 +50,58 @@ class MainWindow(object):
         self.studentTable = window.studentTable
         self.tableList = []  # Student
         self.tableIndex = {}  # Student -> Item
+        self.studentTable.itemSelectionChanged.connect(self.onSelectStudent)
+        self.studentTable.activated.connect(self.onEdit)
 
         self.searchMode = 0  # 0不搜索 1快速搜索 2高级搜索
+
+        self.dialog.closeEvent = self.onQuit
 
     def onQuickSearch(self):
         key = self.searchEdit.text()
         key = ' '.join(key.split())
 
+    def onQuit(self, _):
+        public.studentManager.save()
+
     def onSearch(self):
         print("onSearch!")
 
     def onAddStudent(self):
-        print("onAddStudent!")
+        def _onAddStudent(_student):
+            student = _student.copy()
+            public.studentManager.add(student)
+            self.tableSet(student)
+        self._newBox = boxUI.NewBox(_onAddStudent)
+        self._newBox.show()
 
     def onDelete(self):
-        print("onDelete!")
+        student = self.selection
+        if not student:
+            return
+        confirm = QMessageBox.information(QtWidgets.QWidget(), "删除档案", "确认删除此档案?",
+                                          QMessageBox.Yes | QMessageBox.No)
+        if confirm == QMessageBox.Yes:
+            item = self.tableIndex[student]
+            n = self.studentTable.topLevelItemCount()
+            for i in range(0, n):
+                if self.studentTable.topLevelItem(i) == item:
+                    self.studentTable.takeTopLevelItem(i)
+                    self.tableList.remove(student)
+                    self.tableIndex.pop(student)
+                    break
+            public.studentManager.delete(student)
 
     def onEdit(self):
-        print("onEdit!")
+        student = self.selection
+        if not student:
+            return
+
+        def _onEdit(student):
+            if student in self.tableIndex:
+                self.tableSet(student, self.tableIndex[student])
+        self._editBox = boxUI.EditBox(student, _onEdit)
+        self._editBox.show()
 
     def setStudentInfo(self, student=None):
         student = student or public.studentManager.emptyStudent
@@ -80,12 +116,15 @@ class MainWindow(object):
         self.dialog.show()
 
     def tableShow(self, studentList):
-        pass
+        self.tableClear()
+        for student in studentList:
+            self.tableAdd(student)
+        self.onSelectStudent()
 
     def tableAdd(self, student):
         item = QtWidgets.QTreeWidgetItem(self.studentTable)
         self.tableSet(student, item)
-        self.tableList.append(item)
+        self.tableList.append(student)
         self.tableIndex[student] = item
 
     def tableSet(self, student, item=None):
@@ -108,7 +147,7 @@ class MainWindow(object):
         pass
 
     def onSelectStudent(self):
-        item = self.searchList.selectedItems()
+        item = self.studentTable.selectedItems()
         selected = True if item else False
         selection = None
         if selected:
