@@ -22,6 +22,8 @@ class StudentManager(object):
 
         self.load(path) if path else None
 
+        self.emptyStudent = Student()
+
     def new(self, index, name, birth, major, grade, classname):
         if index in self.studentIndex:
             return False
