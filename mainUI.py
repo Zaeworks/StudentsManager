@@ -52,6 +52,9 @@ class MainWindow(object):
         self.studentTable.itemSelectionChanged.connect(self.onSelectStudent)
         self.studentTable.activated.connect(self.onEdit)
 
+        width = [125, 82, 50, 100, 202, 87, 113]
+        [self.studentTable.setColumnWidth(i, width[i]) for i in range(7)]
+
         # 视图
         self.viewMenu = window.viewMenu
         from student import attributeList as attrs
