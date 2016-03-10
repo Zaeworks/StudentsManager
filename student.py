@@ -5,6 +5,7 @@ import pickle
 attributeList = [
     ("index", "学号"),
     ("name", "姓名"),
+    ("sex", "性别"),
     ("birth", "出生日期"),
     ("major", "专业"),
     ("grade", "年级"),
@@ -113,13 +114,17 @@ class StudentManager(object):
 class Student(object):
     """学生类, 用于存储学生基本信息"""
 
-    def __init__(self, index="", name="", birth="", major="", grade="", classname=""):
+    def __init__(self, index="", name="", sex=0, birth="", major="", grade="", classname=""):
         self.index = index
         self.name = name
+        self.sex = sex
         self.birth = birth
         self.major = major
         self.grade = grade
         self.classname = classname
+
+    def getSex(self):
+        return ["", "男", "女"][self.sex]
 
     def copy(self):
         student = Student()
@@ -129,6 +134,7 @@ class Student(object):
     def copyTo(self, student):
         student.index = self.index
         student.name = self.name
+        student.sex = self.sex
         student.birth = self.birth
         student.major = self.major
         student.grade = self.grade

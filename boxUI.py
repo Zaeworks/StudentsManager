@@ -29,6 +29,23 @@ class StudentBox(object):
         self.okButton.clicked.connect(self.onOkButtonClicked)
         self.cancelButton.clicked.connect(self.dialog.close)
 
+        self.maleButton = window.maleButton
+        self.famaleButton = window.famaleButton
+
+    def getSex(self):
+        if self.maleButton.isChecked():
+            return 1
+        elif self.famaleButton.isChecked():
+            return 2
+        else:
+            return 0
+
+    def setSex(self, value):
+        if value == 1:
+            self.maleButton.setChecked(True)
+        elif value == 2:
+            self.famaleButton.setChecked(True)
+
     def onOkButtonClicked(self):
         if self.onFinished():
             self.dialog.close()
@@ -49,6 +66,7 @@ class StudentBox(object):
     def applyToStudent(self, student):
         student.index = self.indexEdit.text()
         student.name = self.nameEdit.text()
+        student.sex = self.getSex()
         student.birth = self.birthEdit.text()
         student.major = self.majorEdit.text()
         student.grade = self.gradeEdit.text()
@@ -72,6 +90,7 @@ class EditBox(StudentBox):
 
         self.indexEdit.setText(student.index)
         self.nameEdit.setText(student.name)
+        self.setSex(student.sex)
         self.birthEdit.setText(student.birth)
         self.majorEdit.setText(student.major)
         self.gradeEdit.setText(student.grade)
@@ -122,6 +141,9 @@ class SearchBox(StudentBox):
         self.setTitle("高级搜索...")
         self.setMsg("请输入关键词, 多个条件用空格分隔")
         self.setButton("搜索")
+
+        self.maleButton.setEnabled(False)
+        self.famaleButton.setEnabled(False)
 
     def onFinished(self):
         keyList = [

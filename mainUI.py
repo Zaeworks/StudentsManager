@@ -17,6 +17,7 @@ class MainWindow(object):
 
         self.indexLabel = window.indexLabel
         self.nameLabel = window.nameLabel
+        self.sexLabel = window.sexLabel
         self.birthLabel = window.birthLabel
         self.majorLabel = window.majorLabel
         self.gradeLabel = window.gradeLabel
@@ -106,6 +107,7 @@ class MainWindow(object):
         student = student or public.studentManager.emptyStudent
         self.indexLabel.setText(student.index)
         self.nameLabel.setText(student.name)
+        self.sexLabel.setText(student.getSex())
         self.birthLabel.setText(student.birth)
         self.majorLabel.setText(student.major)
         self.gradeLabel.setText(student.grade)
@@ -130,10 +132,11 @@ class MainWindow(object):
         if item:
             item.setText(0, student.index)
             item.setText(1, student.name)
-            item.setText(2, student.birth)
-            item.setText(3, student.major)
-            item.setText(4, student.grade)
-            item.setText(5, student.classname)
+            item.setText(2, student.getSex())
+            item.setText(3, student.birth)
+            item.setText(4, student.major)
+            item.setText(5, student.grade)
+            item.setText(6, student.classname)
         elif self.searchMode == 0:
             self.tableAdd(student)
 
