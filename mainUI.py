@@ -22,8 +22,6 @@ class MainWindow(object):
         self.gradeLabel = window.gradeLabel
         self.classLabel = window.classLabel
 
-        self.statusBar = window.statusbar
-
         self.actionSearch = window.actionSreach
         self.searchButton = window.searchButton
         self.actionSearch.triggered.connect(self.onSearch)
@@ -79,7 +77,8 @@ class MainWindow(object):
         student = self.selection
         if not student:
             return
-        confirm = QMessageBox.information(QtWidgets.QWidget(), "删除档案", "确认删除此档案?",
+        confirm = QMessageBox.information(QtWidgets.QWidget(),
+                                          "删除档案", "确认删除此档案?",
                                           QMessageBox.Yes | QMessageBox.No)
         if confirm == QMessageBox.Yes:
             item = self.tableIndex[student]
