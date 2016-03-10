@@ -46,24 +46,29 @@ class MainWindow(object):
         self.deleteButton.clicked.connect(self.onDelete)
         self.actionDelete.triggered.connect(self.onDelete)
 
-        # 视图
-        self.viewMenu = window.viewMenu
-        from student import attributeList as attrs
-        for i in range(0, len(attrs)):
-            action = QtWidgets.QAction(attrs[i][1], self.dialog)
-            action.setCheckable(True)
-            action.setChecked(True)
-            self.viewMenu.addAction(action)
-
         self.studentTable = window.studentTable
         self.tableList = []  # Student
         self.tableIndex = {}  # Student -> Item
         self.studentTable.itemSelectionChanged.connect(self.onSelectStudent)
         self.studentTable.activated.connect(self.onEdit)
 
+        # 视图
+        self.viewMenu = window.viewMenu
+        from student import attributeList as attrs
+        from functools import partial
+        for i in range(0, len(attrs)):
+            action = QtWidgets.QAction(attrs[i][1], self.dialog)
+            action.setCheckable(True)
+            action.setChecked(True)
+            self.viewMenu.addAction(action)
+            action.triggered.connect(partial(self.onSetView, i))
+
         self.searchMode = 0  # 0不搜索 1快速搜索 2高级搜索
 
         self.dialog.closeEvent = self.onQuit
+
+    def onSetView(self, index, checked):
+        self.studentTable.setColumnHidden(index, not checked)
 
     def onQuickSearch(self):
         key = self.searchEdit.text()
