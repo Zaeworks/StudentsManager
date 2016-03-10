@@ -1,5 +1,7 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QFileDialog
+from functools import partial
 from _mainUI import Ui_MainWindow
 import boxUI
 import public
@@ -58,7 +60,6 @@ class MainWindow(object):
         # 视图
         self.viewMenu = window.viewMenu
         from student import attributeList as attrs
-        from functools import partial
         for i in range(0, len(attrs)):
             action = QtWidgets.QAction(attrs[i][1], self.dialog)
             action.setCheckable(True)
@@ -68,7 +69,19 @@ class MainWindow(object):
 
         self.searchMode = 0  # 0不搜索 1快速搜索 2高级搜索
 
+        window.exportSelected.triggered.connect(partial(self.onExport, True))
+        window.exportAll.triggered.connect(partial(self.onExport, False))
+
         self.dialog.closeEvent = self.onQuit
+
+    def onExport(self, part):
+        name = "导出选中档案..." if part else "导出所有档案..."
+        path, ok = QFileDialog.getSaveFileName(
+            self.dialog, name, "C:/", "Excel表格(*.xls)")
+        if not path:
+            return
+        studentList = self.tableList.copy() if part else None
+        public.studentManager.exportAsExcel(path, studentList)
 
     def onSetView(self, index, checked):
         self.studentTable.setColumnHidden(index, not checked)

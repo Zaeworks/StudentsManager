@@ -72,8 +72,24 @@ class StudentManager(object):
                         break
         return result
 
-    def export(self, path):
-        pass
+    def exportAsExcel(self, path, studentList=None):
+        studentList = studentList or self.studentList
+        import xlwt
+        xls = xlwt.Workbook(encoding='utf-8')
+        xlss = xls.add_sheet("学生学籍档案")
+        attrs = []
+        for header in range(0, len(attributeList)):
+            xlss.write(0, header, attributeList[header][1])
+            attrs.append(attributeList[header][0])
+        for row in range(0, len(studentList)):
+            student = studentList[row]
+            for column in range(0, len(attrs)):
+                if column == 2:
+                    value = student.getSex()
+                else:
+                    value = getattr(student, attrs[column])
+                xlss.write(row + 1, column, value)
+        xls.save(path)
 
     def save(self, path=None):
         path = path or self.path
