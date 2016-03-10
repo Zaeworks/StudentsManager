@@ -46,6 +46,15 @@ class MainWindow(object):
         self.deleteButton.clicked.connect(self.onDelete)
         self.actionDelete.triggered.connect(self.onDelete)
 
+        # 视图
+        self.viewMenu = window.viewMenu
+        from student import attributeList as attrs
+        for i in range(0, len(attrs)):
+            action = QtWidgets.QAction(attrs[i][1], self.dialog)
+            action.setCheckable(True)
+            action.setChecked(True)
+            self.viewMenu.addAction(action)
+
         self.studentTable = window.studentTable
         self.tableList = []  # Student
         self.tableIndex = {}  # Student -> Item
