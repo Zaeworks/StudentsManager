@@ -78,8 +78,10 @@ class StudentManager(object):
         xls = xlwt.Workbook(encoding='utf-8')
         xlss = xls.add_sheet("学生学籍档案")
         attrs = []
+        width = [100, 80, 50, 100, 200, 80, 80]
         for header in range(0, len(attributeList)):
             xlss.write(0, header, attributeList[header][1])
+            xlss.col(header).width = width[header] * 256 // 9
             attrs.append(attributeList[header][0])
         for row in range(0, len(studentList)):
             student = studentList[row]
