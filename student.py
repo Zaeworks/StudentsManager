@@ -26,14 +26,6 @@ class StudentManager(object):
 
         self.emptyStudent = Student()
 
-    def new(self, index, name, birth, major, grade, classname):
-        if index in self.studentIndex:
-            return False
-        student = Student(index, name, birth, major, grade, classname)
-        self.studentList.append(student)
-        self.studenIndex[index] = student
-        return True
-
     def add(self, student):
         self.studentList.append(student)
         self.studentIndex[student.index] = student
@@ -62,7 +54,7 @@ class StudentManager(object):
         searchList = searchList or self.studentList
         if not keyList:
             return searchList.copy()
-        if searchBy in ["index", "name", "birth", "major", "grade", "classname"]:
+        else:
             keyList = keyList.split()
             if len(keyList) > 1:
                 [keyList.pop(i) if not i else None for i in keyList]
@@ -72,7 +64,7 @@ class StudentManager(object):
                     if key in target:
                         result.append(student)
                         break
-        return result
+            return result
 
     def exportAsExcel(self, path, studentList=None):
         studentList = studentList or self.studentList
