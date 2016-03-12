@@ -31,13 +31,6 @@ class StudentManager(object):
         self.studentIndex[student.index] = student
 
     def delete(self, student):
-        if isinstance(student, Student):
-            pass
-        elif isinstance(student, int) and student in self.studenIndex:
-            student = self.studentIndex[student]
-        else:
-            return False
-
         self.studentIndex.pop(student.index)
         self.studentList.remove(student)
         return True
