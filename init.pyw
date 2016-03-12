@@ -13,7 +13,6 @@ if __name__ == "__main__":
     public.studentManager = StudentManager()
 
     public.mainDialog = MainWindow()
-    public.mainDialog.tableShow(public.studentManager.studentList)
     public.mainDialog.show()
 
     sys.exit(app.exec_())
