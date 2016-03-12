@@ -73,6 +73,15 @@ class MainWindow(object):
         window.exportAll.triggered.connect(partial(self.onExport, False))
 
         self.dialog.closeEvent = self.onQuit
+        window.actionSave.triggered.connect(public.studentManager.save)
+        window.actionSaveAs.triggered.connect(self.onSaveAs)
+
+    def onSaveAs(self):
+        path, ok = QFileDialog.getSaveFileName(
+            self.dialog, "另存学籍表", "C:/", "学生档案文件(*.stu)")
+        if not path:
+            return
+        public.studentManager.save(path)
 
     def onExport(self, part):
         name = "导出选中档案..." if part else "导出所有档案..."
