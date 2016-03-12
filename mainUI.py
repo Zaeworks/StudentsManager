@@ -76,6 +76,22 @@ class MainWindow(object):
         window.actionSave.triggered.connect(public.studentManager.save)
         window.actionSaveAs.triggered.connect(self.onSaveAs)
 
+        window.actionExit.triggered.connect(self.dialog.close)
+        window.actionUrl.triggered.connect(self.onVisitWeb)
+        window.actionAbout.triggered.connect(self.onAbout)
+
+    def onAbout(self):
+        import version
+        QMessageBox.information(QtWidgets.QDialog(), "关于", '\n'.join([
+            "学生学籍管理系统 Build %03d" % version.build,
+            "扎易作品@Zaeworks\n",
+            "本作品仅供学习交流使用, 禁止用于商业用途!"
+        ]))
+
+    def onVisitWeb(self):
+        import webbrowser
+        webbrowser.open("https://github.com/Zaeworks/StudentsManager")
+
     def onSaveAs(self):
         path, ok = QFileDialog.getSaveFileName(
             self.dialog, "另存学籍表", "C:/", "学生档案文件(*.stu)")
@@ -117,9 +133,9 @@ class MainWindow(object):
         student = self.selection
         if not student:
             return
-        confirm = QMessageBox.information(QtWidgets.QWidget(),
-                                          "删除档案", "确认删除此档案?",
-                                          QMessageBox.Yes | QMessageBox.No)
+        confirm = QMessageBox.warning(QtWidgets.QWidget(),
+                                      "删除档案", "确认删除此档案?",
+                                      QMessageBox.Yes | QMessageBox.No)
         if confirm == QMessageBox.Yes:
             item = self.tableIndex[student]
             n = self.studentTable.topLevelItemCount()
