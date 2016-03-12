@@ -217,9 +217,6 @@ class MainWindow(object):
         self.tableList.clear()
         self.tableIndex.clear()
 
-    def tableUpdate(self):
-        pass
-
     def onSelectStudent(self):
         item = self.studentTable.selectedItems()
         selected = True if item else False
