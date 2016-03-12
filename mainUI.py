@@ -80,6 +80,10 @@ class MainWindow(object):
         window.actionUrl.triggered.connect(self.onVisitWeb)
         window.actionAbout.triggered.connect(self.onAbout)
 
+        window.searchBox.currentTextChanged['QString'].connect(self.onSearchBy)
+
+        self.onSearchBy("学号")
+
     def onAbout(self):
         import version
         QMessageBox.information(QtWidgets.QDialog(), "关于", '\n'.join([
@@ -111,15 +115,28 @@ class MainWindow(object):
     def onSetView(self, index, checked):
         self.studentTable.setColumnHidden(index, not checked)
 
-    def onQuickSearch(self):
-        key = self.searchEdit.text()
-        key = ' '.join(key.split())
-
     def onQuit(self, _):
         public.studentManager.save()
 
+    def onSearchBy(self, searchBy):
+        from student import attributeList as attrs
+        for attr, translate in attrs:
+            if searchBy == translate:
+                self.quickSearchBy = attr
+        self.onQuickSearch()
+
+    def onQuickSearch(self):
+        key = self.searchEdit.text()
+        key = ' '.join(key.split())
+        result = public.studentManager.search(self.quickSearchBy, key)
+        self.tableShow(result)
+
     def onSearch(self):
-        print("onSearch!")
+        def _onSaerch(keyList):
+            result = public.studentManager.multiSearch(keyList)
+            self.tableShow(result)
+        self._saerchBox = boxUI.SearchBox(_onSaerch)
+        self._saerchBox.show()
 
     def onAddStudent(self):
         def _onAddStudent(_student):

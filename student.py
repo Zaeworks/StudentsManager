@@ -60,6 +60,8 @@ class StudentManager(object):
     def search(self, searchBy, keyList, searchList=None):
         result = []
         searchList = searchList or self.studentList
+        if not keyList:
+            return searchList.copy()
         if searchBy in ["index", "name", "birth", "major", "grade", "classname"]:
             keyList = keyList.split()
             if len(keyList) > 1:
