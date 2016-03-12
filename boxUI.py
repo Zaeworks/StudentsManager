@@ -81,7 +81,6 @@ class EditBox(StudentBox):
 
     def __init__(self, student, callback):
         super(EditBox, self).__init__()
-        self.student = student
         self.callback = callback
 
         self.setTitle("修改信息...")
@@ -99,12 +98,10 @@ class EditBox(StudentBox):
         self._student = Student()
 
     def onFinished(self):
-        student = self.student
         self.applyToStudent(self._student)
         check, info = self._student.checkInfo()
         if check:
-            self.applyToStudent(student)
-            self.callback(student)
+            self.callback(self._student)
         else:
             self.setMsg(info)
         return check

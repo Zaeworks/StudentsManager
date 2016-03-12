@@ -169,7 +169,13 @@ class MainWindow(object):
         if not student:
             return
 
-        def _onEdit(student):
+        def _onEdit(_student):
+            if _student.index != student.index:
+                public.studentManager.delete(student)
+                _student.copyTo(student)
+                public.studentManager.add(student)
+            else:
+                _student.copyTo(student)
             if student in self.tableIndex:
                 self.tableSet(student, self.tableIndex[student])
         self._editBox = boxUI.EditBox(student, _onEdit)
