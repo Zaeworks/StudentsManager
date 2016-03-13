@@ -136,7 +136,7 @@ class SearchBox(StudentBox):
         self.callback = callback
 
         self.setTitle("高级搜索...")
-        self.setMsg("请输入关键词, 多个条件用空格分隔")
+        self.setMsg("请输入检索关键词")
         self.setButton("搜索")
 
         self.maleButton.setEnabled(False)
