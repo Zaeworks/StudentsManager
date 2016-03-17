@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QFileDialog
 from functools import partial
@@ -16,6 +16,11 @@ class MainWindow(object):
         window = Ui_MainWindow()
         window.setupUi(self.dialog)
         self.dialog.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
+
+        icon = QtGui.QIcon()
+        icon.addPixmap(
+            QtGui.QPixmap("icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.dialog.setWindowIcon(icon)
 
         self.indexLabel = window.indexLabel
         self.nameLabel = window.nameLabel

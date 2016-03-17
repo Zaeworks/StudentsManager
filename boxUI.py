@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 from _studentBox import Ui_StudentBox
 
 from student import Student
@@ -14,6 +14,11 @@ class StudentBox(object):
         window.setupUi(self.dialog)
 
         self.dialog.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
+
+        icon = QtGui.QIcon()
+        icon.addPixmap(
+            QtGui.QPixmap("icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.dialog.setWindowIcon(icon)
 
         self.indexEdit = window.indexEdit
         self.nameEdit = window.nameEdit
